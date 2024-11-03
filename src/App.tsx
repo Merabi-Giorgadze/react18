@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { lazy, Suspense, useState } from 'react';
+import Form from './component/Form';
 
-function App() {
+const Photos = lazy(() => import('./component/Photos'))
+
+const App =() => {
+  const [showPhotos, setShowPhotos] = useState(false);
+
+  const handleLoadPhotos = () => {
+    setShowPhotos(true);
+  };
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Form/>
+      <Form/>
+      <button onClick={handleLoadPhotos}>Load Photos</button>
+      <Suspense fallback={<h1>Loading...</h1>}>
+        {showPhotos && (
+          <Photos />
+        )}
+      </Suspense>
+      
     </div>
   );
 }
